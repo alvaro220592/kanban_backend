@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/statuses', [TaskController::class, 'index']);
 Route::post('/changeTaskStatus', [TaskController::class, 'changeTaskStatus']);
+Route::post('/task', [TaskController::class, 'store']);
 Route::get('/task/{id}', [TaskController::class, 'show']);
 
 Route::get('/status', function(){

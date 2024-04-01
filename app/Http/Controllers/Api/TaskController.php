@@ -52,7 +52,27 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $ultimaTask = Task::where('task_status_id', $request->task_status_id)->orderBy('order', 'desc')->first();
+            $ordemNovaTask = $ultimaTask ? $ultimaTask->order + 1 : 1;
+
+            $task = new Task;
+            $task->fill($request->all());
+            $task->order = $ordemNovaTask;
+            $task->save();
+
+            return response()->json([
+                'status' => 'ok',
+                'message' => 'Cadastrado com sucesso'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'erro',
+                'message' => 'Erro ao cadastrar: ' . $e->getMessage()
+            ], 500);
+        }
+
     }
 
     /**
