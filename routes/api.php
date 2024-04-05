@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\TaskStatusController;
 use App\Models\Api\Task;
 use App\Models\Api\TaskStatus;
 use Illuminate\Http\Request;
@@ -23,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/statuses', [TaskController::class, 'index']);
 Route::post('/changeTaskStatus', [TaskController::class, 'changeTaskStatus']);
+Route::post('/status/store', [TaskStatusController::class, 'store']);
+Route::post('/status/update/{id}', [TaskStatusController::class, 'update']);
 Route::post('/task', [TaskController::class, 'store']);
 Route::get('/task/{id}', [TaskController::class, 'show']);
 
