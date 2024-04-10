@@ -9,9 +9,13 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'background_color', 'order', 'task_status_id'];
+    protected $fillable = ['title', 'description', 'background_color', 'order', 'task_status_id', 'priority_id'];
 
     public function status(){
         return $this->belongsTo(TaskStatus::class, 'task_status_id');
+    }
+
+    public function priority(){
+        return $this->belongsTo(Priority::class, 'priority_id');
     }
 }

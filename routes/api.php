@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\TaskStatusController;
+use App\Models\Api\Priority;
 use App\Models\Api\Task;
 use App\Models\Api\TaskStatus;
 use Illuminate\Http\Request;
@@ -28,6 +29,9 @@ Route::post('/status/store', [TaskStatusController::class, 'store']);
 Route::post('/status/update/{id}', [TaskStatusController::class, 'update']);
 Route::post('/task', [TaskController::class, 'store']);
 Route::get('/task/{id}', [TaskController::class, 'show']);
+Route::post('/task/update/{id}', [TaskController::class, 'update']);
+Route::delete('/task/{id}', [TaskController::class, 'destroy']);
+Route::delete('/status/{id}', [TaskStatusController::class, 'destroy']);
 
 Route::get('/status', function(){
     $status = new TaskStatus;
@@ -116,4 +120,20 @@ Route::get('/task', function(){
     $task->order = 1;
     $task->task_status_id = 3;
     $task->save();
+});
+
+Route::get('/newpriorities', function(){
+    $priority = new Priority();
+    $priority->name = 'Baixa';
+    $priority->save();
+
+
+    $priority = new Priority;
+    $priority->name = 'Média';
+    $priority->save();
+
+
+    $priority = new Priority;
+    $priority->name = 'Alta';
+    $priority->save();
 });

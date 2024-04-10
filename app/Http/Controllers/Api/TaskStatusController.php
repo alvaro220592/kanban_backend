@@ -76,6 +76,20 @@ class TaskStatusController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $status = TaskStatus::find($id);
+            $status->delete();
+
+            return response()->json([
+                'status' => 'ok',
+                'message' => 'Excluído com sucesso'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'erro',
+                'message' => 'Erro ao cadastrar: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

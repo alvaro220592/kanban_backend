@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Api\Priority;
 use App\Models\Api\Task;
 use App\Models\Api\TaskStatus;
 use Illuminate\Http\Request;
@@ -14,11 +15,16 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $statuses = TaskStatus::with(['tasks' => function ($query) {
+        $statuses = TaskStatus::with(['tasks.priority' => function ($query) {
             $query->orderBy('order');
         }])->get();
 
-        return $statuses;
+        $priorities = Priority::all();
+
+        return [
+            'statuses' => $statuses,
+            'priorities' => $priorities
+        ];
     }
 
 
@@ -63,7 +69,7 @@ class TaskController extends Controller
 
             return response()->json([
                 'status' => 'ok',
-                'message' => 'Cadastrado com sucesso'
+                'message' => 'Salvo com sucesso'
             ], 200);
 
         } catch (\Exception $e) {
@@ -89,7 +95,26 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $task = Task::find($id);
+            $task->title = $request->title;
+            $task->description = $request->description;
+            $task->priority_id = $request->priority_id;
+            $task->background_color = $request->background_color;
+            $task->update();
+
+
+            return response()->json([
+                'status' => 'ok',
+                'message' => 'Salvo com sucesso'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'erro',
+                'message' => 'Erro ao cadastrar: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -97,6 +122,20 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $task = Task::find($id);
+            $task->delete();
+
+            return response()->json([
+                'status' => 'ok',
+                'message' => 'Excluído com sucesso'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'erro',
+                'message' => 'Erro ao cadastrar: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

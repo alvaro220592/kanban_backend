@@ -19,6 +19,8 @@ return new class extends Migration
             $table->unsignedInteger('order');
             $table->unsignedBigInteger('task_status_id'); // Coluna com chave estrangeira
             $table->foreign('task_status_id')->references('id')->on('task_statuses')->onDelete('cascade');
+            $table->unsignedBigInteger('priority_id');
+            $table->foreign('priority_id')->references('id')->on('priorities')->onDelete('cascade');
             $table->timestamps();
         });
     }
